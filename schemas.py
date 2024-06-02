@@ -1,3 +1,4 @@
+from datetime import date
 from pydantic import BaseModel
 
 
@@ -12,6 +13,24 @@ class AuthorCreate(AuthorBase):
 
 class Author(AuthorBase):
     id: int
+
+    class ConfigDict:
+        orm_mode = True
+
+
+class BookBase(BaseModel):
+    title: str
+    summary: str
+    publication_date: date
+
+
+class BookCreate(BookBase):
+    author_id: int
+
+
+class Book(BookBase):
+    id: int
+    author: Author
 
     class ConfigDict:
         orm_mode = True
