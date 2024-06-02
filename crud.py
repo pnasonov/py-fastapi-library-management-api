@@ -5,11 +5,16 @@ import models
 import schemas
 
 
-def get_all_authors(db: Session, skip: int, limit: int):
+def get_all_authors(
+    db: Session, skip: int, limit: int
+) -> list[models.DBAuthor]:
     return db.query(models.DBAuthor).offset(skip).limit(limit).all()
 
 
-def create_author(db: Session, author: schemas.AuthorCreate):
+def create_author(
+    db: Session,
+    author: schemas.AuthorCreate,
+) -> models.DBAuthor:
     db_author = models.DBAuthor(name=author.name, bio=author.bio)
     db.add(db_author)
     db.commit()
@@ -18,7 +23,7 @@ def create_author(db: Session, author: schemas.AuthorCreate):
     return db_author
 
 
-def get_author(db: Session, author_id: int):
+def get_author(db: Session, author_id: int) -> models.DBAuthor:
     return (
         db.query(models.DBAuthor)
         .filter(models.DBAuthor.id == author_id)
@@ -31,7 +36,7 @@ def get_all_books(
     skip: int,
     limit: int,
     author_id: Optional[int],
-):
+) -> list[models.DBBook]:
     queryset = db.query(models.DBBook)
 
     if author_id:
@@ -40,7 +45,7 @@ def get_all_books(
     return queryset.offset(skip).limit(limit).all()
 
 
-def create_book(db: Session, book: schemas.BookCreate):
+def create_book(db: Session, book: schemas.BookCreate) -> models.DBBook:
     db_book = models.DBBook(
         title=book.title,
         summary=book.summary,
