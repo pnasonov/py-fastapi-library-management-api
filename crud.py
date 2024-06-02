@@ -4,8 +4,8 @@ import models
 import schemas
 
 
-def get_all_authors(db: Session):
-    return db.query(models.DBAuthor).all()
+def get_all_authors(db: Session, skip: int, limit: int):
+    return db.query(models.DBAuthor).offset(skip).limit(limit).all()
 
 
 def create_author(db: Session, author: schemas.AuthorCreate):
@@ -15,3 +15,11 @@ def create_author(db: Session, author: schemas.AuthorCreate):
     db.refresh(db_author)
 
     return db_author
+
+
+def get_author(db: Session, author_id: int):
+    return (
+        db.query(models.DBAuthor)
+        .filter(models.DBAuthor.id == author_id)
+        .first()
+    )
